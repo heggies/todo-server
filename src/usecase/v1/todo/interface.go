@@ -8,6 +8,7 @@ type Writer interface {
 
 type Reader interface {
 	Create(entity todo.Todo) (todo.Todo, error)
+	Delete(id int) (err error)
 }
 
 type Repositorier interface {

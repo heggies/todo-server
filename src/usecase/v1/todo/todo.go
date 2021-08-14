@@ -21,3 +21,7 @@ func (s *Service) Get() (entities []todo.Todo, err error) {
 func (s *Service) Create(entity todo.Todo) (todo.Todo, error) {
 	return s.repo.Create(entity)
 }
+
+func (s *Service) Delete(id int) (err error) {
+	return s.repo.Delete(id)
+}

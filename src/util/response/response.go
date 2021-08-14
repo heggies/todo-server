@@ -14,7 +14,7 @@ type response struct {
 
 type responseResult struct {
 	response
-	Result interface{} `json:"result"`
+	Result interface{} `json:"result,omitempty"`
 }
 
 type responseError struct {

@@ -43,3 +43,30 @@ func (repo *Repository) Create(entity todo.Todo) (todo.Todo, error) {
 	err := query.Commit().Error
 	return entity, err
 }
+
+func (repo *Repository) Delete(id int) (err error) {
+	entity := todo.Todo{
+		Model: gorm.Model{
+			ID: uint(id),
+		},
+	}
+
+	query := repo.db.Model(&entity).Begin()
+	query = query.Delete(&entity)
+
+	if query.Error != nil {
+		query.Rollback()
+		err = query.Error
+		return
+	}
+
+	err = query.Commit().Error
+	if err != nil {
+		return
+	}
+
+	if query.RowsAffected == 0 {
+		err = gorm.ErrRecordNotFound
+	}
+	return
+}
