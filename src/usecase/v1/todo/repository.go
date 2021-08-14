@@ -45,24 +45,21 @@ func (repo *Repository) Create(entity todo.Todo) (todo.Todo, error) {
 }
 
 func (repo *Repository) Update(entity todo.Todo) (todo.Todo, error) {
-	query := repo.db.Model(&entity).Begin()
-	query = query.Updates(entity)
-
-	if query.Error != nil {
-		query.Rollback()
-		return entity, query.Error
-	}
-
-	err := query.Commit().Error
-	if err != nil {
+	todo := todo.Todo{}
+	if err := repo.db.Take(&todo, entity.ID).Error; err != nil {
 		return entity, err
 	}
 
-	if query.RowsAffected == 0 {
-		err = gorm.ErrRecordNotFound
+	query := repo.db.Model(&todo).Begin()
+	query = query.Updates(entity)
+
+	if err := query.Error; err != nil {
+		return entity, err
 	}
 
-	return entity, err
+	err := query.Commit().Error
+
+	return todo, err
 }
 
 func (repo *Repository) Delete(id int) (err error) {
