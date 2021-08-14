@@ -9,6 +9,7 @@ import (
 	"github.com/heggies/todo-server/src/entity/v1/todo"
 	usecase "github.com/heggies/todo-server/src/usecase/v1/todo"
 	"github.com/heggies/todo-server/src/util/response"
+	"github.com/heggies/todo-server/src/util/validator"
 	"github.com/jinzhu/copier"
 )
 
@@ -27,9 +28,7 @@ func (ctrl Controller) Get(c *fiber.Ctx) (err error) {
 	todos, err := ctrl.s.Get()
 	if err != nil {
 		log.Println(err.Error())
-
-		c.Status(http.StatusInternalServerError)
-		return
+		return response.Error(c, http.StatusInternalServerError)
 	}
 
 	copier.Copy(&res, &todos)
@@ -44,12 +43,25 @@ func (ctrl Controller) Create(c *fiber.Ctx) (err error) {
 		return
 	}
 
-	entity := todo.Todo{}
-	copier.Copy(&entity, &request)
+	errors, err := validator.ValidateStruct(request)
+	if err != nil {
+		log.Println(err.Error())
+		return response.Error(c, http.StatusInternalServerError)
+	}
+
+	if len(errors) > 0 {
+		return response.Error(c, http.StatusBadRequest, errors...)
+	}
+
+	entity := todo.Todo{
+		Title:       request.Title,
+		Description: &request.Description,
+	}
 
 	entity, err = ctrl.s.Create(entity)
 	if err != nil {
-		return
+		log.Println(err.Error())
+		return response.Error(c, http.StatusInternalServerError)
 	}
 
 	copier.Copy(&request, &entity)
