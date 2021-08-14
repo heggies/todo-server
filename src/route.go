@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,7 +18,9 @@ func start() {
 		app.Use(logger.New())
 	}
 
-	v1.StartHandler(app)
+	if err := v1.StartHandler(app); err != nil {
+		log.Panicln(err.Error())
+	}
 
 	app.Listen(":3000")
 }
