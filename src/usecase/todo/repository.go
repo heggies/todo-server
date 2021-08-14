@@ -1,8 +1,8 @@
 package todo
 
 import (
-	v1 "github.com/heggies/todo-server/src/database/v1"
-	"github.com/heggies/todo-server/src/entity/v1/todo"
+	"github.com/heggies/todo-server/src/database"
+	"github.com/heggies/todo-server/src/entity/todo"
 	"gorm.io/gorm"
 )
 
@@ -11,7 +11,7 @@ type Repository struct {
 }
 
 func NewRepository() (repo *Repository, err error) {
-	db, err := v1.GetInstance()
+	db, err := database.GetInstance()
 	if err != nil {
 		return
 	}

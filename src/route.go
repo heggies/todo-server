@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	v1 "github.com/heggies/todo-server/src/controller/v1"
+	controller "github.com/heggies/todo-server/src/controller"
 )
 
 func start() {
@@ -18,7 +18,7 @@ func start() {
 		app.Use(logger.New())
 	}
 
-	if err := v1.StartHandler(app); err != nil {
+	if err := controller.StartHandler(app); err != nil {
 		log.Panicln(err.Error())
 	}
 

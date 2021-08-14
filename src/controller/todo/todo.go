@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/heggies/todo-server/src/controller/v1/todo/presenter"
-	usecase "github.com/heggies/todo-server/src/usecase/v1/todo"
+	"github.com/heggies/todo-server/src/controller/todo/presenter"
+	"github.com/heggies/todo-server/src/usecase/todo"
 	"github.com/heggies/todo-server/src/util/response"
 	"github.com/heggies/todo-server/src/util/validator"
 	"github.com/jinzhu/copier"
@@ -16,10 +16,10 @@ import (
 )
 
 type Controller struct {
-	s usecase.Service
+	s todo.Service
 }
 
-func NewController(s *usecase.Service) *Controller {
+func NewController(s *todo.Service) *Controller {
 	return &Controller{
 		s: *s,
 	}

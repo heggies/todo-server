@@ -1,7 +1,7 @@
 package todo
 
 import (
-	v1 "github.com/heggies/todo-server/src/database/v1"
+	"github.com/heggies/todo-server/src/database"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +13,7 @@ type Todo struct {
 }
 
 func Migrate() (err error) {
-	db, err := v1.GetInstance()
+	db, err := database.GetInstance()
 	if err != nil {
 		return
 	}

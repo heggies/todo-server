@@ -1,6 +1,6 @@
 package todo
 
-import "github.com/heggies/todo-server/src/entity/v1/todo"
+import "github.com/heggies/todo-server/src/entity/todo"
 
 type Writer interface {
 	Get() (entities []todo.Todo, err error)

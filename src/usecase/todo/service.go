@@ -1,8 +1,8 @@
 package todo
 
 import (
-	"github.com/heggies/todo-server/src/controller/v1/todo/presenter"
-	"github.com/heggies/todo-server/src/entity/v1/todo"
+	"github.com/heggies/todo-server/src/controller/todo/presenter"
+	"github.com/heggies/todo-server/src/entity/todo"
 	"gorm.io/gorm"
 )
 

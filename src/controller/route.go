@@ -2,8 +2,8 @@ package v1
 
 import (
 	"github.com/gofiber/fiber/v2"
-	todocontroller "github.com/heggies/todo-server/src/controller/v1/todo"
-	"github.com/heggies/todo-server/src/usecase/v1/todo"
+	todocontroller "github.com/heggies/todo-server/src/controller/todo"
+	"github.com/heggies/todo-server/src/usecase/todo"
 )
 
 func StartHandler(c *fiber.App) (err error) {
