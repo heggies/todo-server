@@ -72,6 +72,39 @@ func (ctrl *Controller) Create(c *fiber.Ctx) error {
 	return response.JSON(c, request)
 }
 
+func (ctrl *Controller) Update(c *fiber.Ctx) error {
+	id, _ := strconv.Atoi(c.Params("id"))
+	if id <= 0 {
+		return response.Error(c, http.StatusBadRequest)
+	}
+
+	request := presenter.Todo{}
+	if err := c.BodyParser(&request); err != nil {
+		log.Println(err.Error())
+		return response.Error(c, http.StatusInternalServerError)
+	}
+
+	entity := todo.Todo{
+		Model: gorm.Model{
+			ID: uint(id),
+		},
+		Title:       request.Title,
+		Description: &request.Description,
+		IsDone:      &request.IsDone,
+	}
+	entity, err := ctrl.s.Update(entity)
+	if errors.Is(gorm.ErrRecordNotFound, err) {
+		return response.Error(c, http.StatusNotFound)
+	} else if err != nil {
+		log.Println(err.Error())
+		return response.Error(c, http.StatusInternalServerError)
+	}
+
+	copier.Copy(&request, entity)
+
+	return response.JSON(c, request)
+}
+
 func (ctrl *Controller) Delete(c *fiber.Ctx) error {
 	id, _ := strconv.Atoi(c.Params("id"))
 	if id <= 0 {

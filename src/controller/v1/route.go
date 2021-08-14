@@ -25,5 +25,6 @@ func StartHandler(c *fiber.App) (err error) {
 func registerTodoController(c *fiber.App, controller *todocontroller.Controller) {
 	c.Get("/todos", controller.Get)
 	c.Post("/todos", controller.Create)
+	c.Put("/todos/:id", controller.Update)
 	c.Delete("/todos/:id", controller.Delete)
 }

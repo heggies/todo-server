@@ -9,7 +9,7 @@ type Todo struct {
 	gorm.Model
 	Title       string
 	Description *string
-	IsDone      bool
+	IsDone      *bool
 }
 
 func Migrate() (err error) {
