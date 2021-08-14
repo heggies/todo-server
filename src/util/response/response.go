@@ -22,23 +22,25 @@ type responseError struct {
 	Errors []validator.Error `json:"errors,omitempty"`
 }
 
-func JSON(c *fiber.Ctx, data interface{}, status ...int) error {
-	var s = http.StatusOK
-	if len(status) > 0 {
-		s = status[0]
-	}
-
-	_, ok := messages[s]
+func JSON(c *fiber.Ctx, status int, data ...interface{}) error {
+	_, ok := messages[status]
 	if !ok {
-		log.Printf(`[WARN] No message preset for status %v, proceeding with "Success" as response message and status code`, s)
-		s = http.StatusOK
+		log.Printf(`[WARN] No message preset for status %v, proceeding with "Success" as response message and status code`, status)
+		status = http.StatusOK
 	}
 
-	return c.Status(s).JSON(responseResult{
+	var result interface{} = data
+	if len(data) == 0 {
+		result = nil
+	} else if len(data) == 1 {
+		result = data[0]
+	}
+
+	return c.Status(status).JSON(responseResult{
 		response: response{
-			Message: messages[s],
+			Message: messages[status],
 		},
-		Result: data,
+		Result: result,
 	})
 }
 

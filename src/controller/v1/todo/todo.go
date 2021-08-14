@@ -36,7 +36,7 @@ func (ctrl *Controller) Get(c *fiber.Ctx) error {
 
 	copier.Copy(&res, &todos)
 
-	return response.JSON(c, res)
+	return response.JSON(c, http.StatusOK, res)
 }
 
 func (ctrl *Controller) Create(c *fiber.Ctx) error {
@@ -69,7 +69,7 @@ func (ctrl *Controller) Create(c *fiber.Ctx) error {
 
 	copier.Copy(&request, &entity)
 
-	return response.JSON(c, request)
+	return response.JSON(c, http.StatusOK, request)
 }
 
 func (ctrl *Controller) Update(c *fiber.Ctx) error {
@@ -102,7 +102,7 @@ func (ctrl *Controller) Update(c *fiber.Ctx) error {
 
 	copier.Copy(&request, entity)
 
-	return response.JSON(c, request)
+	return response.JSON(c, http.StatusOK, request)
 }
 
 func (ctrl *Controller) Delete(c *fiber.Ctx) error {
@@ -119,5 +119,5 @@ func (ctrl *Controller) Delete(c *fiber.Ctx) error {
 		return response.Error(c, http.StatusInternalServerError)
 	}
 
-	return response.JSON(c, nil)
+	return response.JSON(c, http.StatusOK)
 }
