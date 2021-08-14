@@ -8,7 +8,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/heggies/todo-server/src/controller/v1/todo/presenter"
-	"github.com/heggies/todo-server/src/entity/v1/todo"
 	usecase "github.com/heggies/todo-server/src/usecase/v1/todo"
 	"github.com/heggies/todo-server/src/util/response"
 	"github.com/heggies/todo-server/src/util/validator"
@@ -56,12 +55,7 @@ func (ctrl *Controller) Create(c *fiber.Ctx) error {
 		return response.Error(c, http.StatusBadRequest, errors...)
 	}
 
-	entity := todo.Todo{
-		Title:       request.Title,
-		Description: &request.Description,
-	}
-
-	entity, err = ctrl.s.Create(entity)
+	entity, err := ctrl.s.Create(request)
 	if err != nil {
 		log.Println(err.Error())
 		return response.Error(c, http.StatusInternalServerError)
@@ -84,15 +78,9 @@ func (ctrl *Controller) Update(c *fiber.Ctx) error {
 		return response.Error(c, http.StatusInternalServerError)
 	}
 
-	entity := todo.Todo{
-		Model: gorm.Model{
-			ID: uint(id),
-		},
-		Title:       request.Title,
-		Description: &request.Description,
-		IsDone:      &request.IsDone,
-	}
-	entity, err := ctrl.s.Update(entity)
+	request.ID = id
+
+	entity, err := ctrl.s.Update(request)
 	if errors.Is(gorm.ErrRecordNotFound, err) {
 		return response.Error(c, http.StatusNotFound)
 	} else if err != nil {

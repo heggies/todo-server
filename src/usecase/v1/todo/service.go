@@ -1,6 +1,10 @@
 package todo
 
-import "github.com/heggies/todo-server/src/entity/v1/todo"
+import (
+	"github.com/heggies/todo-server/src/controller/v1/todo/presenter"
+	"github.com/heggies/todo-server/src/entity/v1/todo"
+	"gorm.io/gorm"
+)
 
 type Service struct {
 	repo Repositorier
@@ -18,12 +22,22 @@ func (s *Service) Get() (entities []todo.Todo, err error) {
 	return
 }
 
-func (s *Service) Create(entity todo.Todo) (todo.Todo, error) {
-	return s.repo.Create(entity)
+func (s *Service) Create(entity presenter.Todo) (todo.Todo, error) {
+	return s.repo.Create(todo.Todo{
+		Title:       entity.Title,
+		Description: &entity.Description,
+	})
 }
 
-func (s *Service) Update(entity todo.Todo) (todo.Todo, error) {
-	return s.repo.Update(entity)
+func (s *Service) Update(entity presenter.Todo) (todo.Todo, error) {
+	return s.repo.Update(todo.Todo{
+		Model: gorm.Model{
+			ID: uint(entity.ID),
+		},
+		Title:       entity.Title,
+		Description: &entity.Description,
+		IsDone:      &entity.IsDone,
+	})
 }
 
 func (s *Service) Delete(id int) (err error) {
