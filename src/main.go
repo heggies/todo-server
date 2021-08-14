@@ -7,5 +7,9 @@ import (
 func main() {
 	godotenv.Load()
 
+	err := migrate()
+	if err != nil {
+		panic(err.Error())
+	}
 	start()
 }
