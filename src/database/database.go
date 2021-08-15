@@ -19,10 +19,17 @@ func GetInstance() (*gorm.DB, error) {
 			config.Logger = logger.Default.LogMode(logger.Info)
 		}
 
-		dsn := fmt.Sprintf("host=postgres user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Jakarta",
+		sslMode := "require"
+		if os.Getenv("ENV") == "development" {
+			sslMode = "disable"
+		}
+
+		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=%s TimeZone=Asia/Jakarta",
+			os.Getenv("POSTGRES_HOST"),
 			os.Getenv("POSTGRES_USER"),
 			os.Getenv("POSTGRES_PASSWORD"),
 			os.Getenv("POSTGRES_DB"),
+			sslMode,
 		)
 		db, err = gorm.Open(
 			postgres.New(postgres.Config{
