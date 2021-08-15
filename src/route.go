@@ -22,5 +22,5 @@ func start() {
 		log.Panicln(err.Error())
 	}
 
-	app.Listen(":3000")
+	app.Listen(":" + os.Getenv("PORT"))
 }
