@@ -9,10 +9,11 @@ require (
 	github.com/jinzhu/copier v0.3.2 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/klauspost/compress v1.13.4 // indirect
-	github.com/mattn/go-sqlite3 v1.14.8 // indirect
+	github.com/lib/pq v1.6.0 // indirect
 	github.com/valyala/fasthttp v1.28.0 // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
+	gorm.io/driver/postgres v1.1.0 // indirect
 	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.13
 )

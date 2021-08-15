@@ -1,9 +1,10 @@
 package database
 
 import (
+	"fmt"
 	"os"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -15,11 +16,21 @@ func GetInstance() (*gorm.DB, error) {
 		var err error
 		config := &gorm.Config{}
 		if os.Getenv("ENV") == "development" {
-			config = &gorm.Config{
-				Logger: logger.Default.LogMode(logger.Info),
-			}
+			config.Logger = logger.Default.LogMode(logger.Info)
 		}
-		db, err = gorm.Open(sqlite.Open("todo.db"), config)
+
+		dsn := fmt.Sprintf("host=postgres user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Jakarta",
+			os.Getenv("POSTGRES_USER"),
+			os.Getenv("POSTGRES_PASSWORD"),
+			os.Getenv("POSTGRES_DB"),
+		)
+		db, err = gorm.Open(
+			postgres.New(postgres.Config{
+				DSN:                  dsn,
+				PreferSimpleProtocol: true,
+			}),
+			config,
+		)
 		if err != nil {
 			return db, err
 		}
