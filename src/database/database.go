@@ -15,12 +15,9 @@ func GetInstance() (*gorm.DB, error) {
 	if db == nil {
 		var err error
 		config := &gorm.Config{}
-		if os.Getenv("ENV") == "development" {
-			config.Logger = logger.Default.LogMode(logger.Info)
-		}
-
 		sslMode := "require"
 		if os.Getenv("ENV") == "development" {
+			config.Logger = logger.Default.LogMode(logger.Info)
 			sslMode = "disable"
 		}
 

@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine AS builder
+FROM golang:1.16-alpine
 
 RUN go get -u github.com/cosmtrek/air
 
